@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>贾德尔的笔记本</title><link>/</link><description>Recent content on 贾德尔的笔记本</description><generator>Hugo 0.125.0</generator><language>zh-CN</language><lastBuildDate>Sun, 29 Jun 2025 03:41:58 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>搭建你的家庭实验室（HomeLab）指南</title><link>/posts/homelab/homelab/</link><pubDate>Sat, 28 Jun 2025 22:00:00 +0800</pubDate><guid>/posts/homelab/homelab/</guid><description>TODO</description></item><item><title>大连景色照片</title><link>/posts/life/da-lian/</link><pubDate>Sat, 28 Jun 2025 22:00:00 +0800</pubDate><guid>/posts/life/da-lian/</guid><description>🏔️ 大连风光摄影 记录大连的历史和自然之美，感受这座城市的独特魅力。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>贾德尔的笔记本</title><link>/</link><description>Recent content on 贾德尔的笔记本</description><generator>Hugo 0.125.0</generator><language>zh-CN</language><lastBuildDate>Tue, 03 Feb 2026 09:15:18 +0800</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>搭建你的家庭实验室（HomeLab）指南</title><link>/posts/homelab/homelab/</link><pubDate>Sat, 28 Jun 2025 22:00:00 +0800</pubDate><guid>/posts/homelab/homelab/</guid><description>TODO</description></item><item><title>大连景色照片</title><link>/posts/life/da-lian/</link><pubDate>Sat, 28 Jun 2025 22:00:00 +0800</pubDate><guid>/posts/life/da-lian/</guid><description>🏔️ 大连风光摄影 记录大连的历史和自然之美，感受这座城市的独特魅力。
 📍 景点概览 拍摄时间：2023年04月
 拍摄地点：辽宁省大连市
 主要景点：文化场所、历史遗址
@@ -33,63 +33,7 @@
 使用敲棒辅助拆卸金属滚轮，两侧一起用力很容易拆解下来 更换金属滚轮
 如果滚轮损坏或脱胶，可以更换新的金属滚轮 注意安装方向，确保滚轮正确放置 重新组装鼠标
 按照拆解步骤的反向操作，重新组装鼠标 确保所有螺丝和部件都安装到位 测试鼠标功能
-连接鼠标，测试滚轮是否正常工作 确保滚轮灵敏度和防滑效果良好</description></item><item><title>多个 SSH Keys 用于多个git账号</title><link>/posts/devops/linux/ssh-multiple-accounts/</link><pubDate>Thu, 29 Sep 2022 15:33:30 +0800</pubDate><guid>/posts/devops/linux/ssh-multiple-accounts/</guid><description>account Refer To Link
-Change SHH config vim $HOME/.ssh/config Host github.com-work HostName github.com User git IdentityFile ~/.ssh/id_rsa_activehacker Host github.com-personal HostName github.com User git IdentityFile ~/.ssh/id_rsa_jexchan Change project git config vim .git/config Modify config [core] repositoryformatversion = 0 filemode = true bare = false logallrefupdates = true ignorecase = true precomposeunicode = true [remote &amp;#34;origin&amp;#34;] - url = git@github.com:&amp;lt;username&amp;gt;/&amp;lt;project&amp;gt;.git + url = git@github.com-personal:&amp;lt;username&amp;gt;/&amp;lt;project&amp;gt;.git fetch = +refs/heads/*:refs/remotes/origin/* [branch &amp;#34;master&amp;#34;] remote = origin merge = refs/heads/master [user] name = &amp;lt;username&amp;gt; email = &amp;lt;email&amp;gt;</description></item><item><title>Nginx常用设置</title><link>/posts/devops/nginx/proxy/</link><pubDate>Thu, 29 Sep 2022 14:55:03 +0800</pubDate><guid>/posts/devops/nginx/proxy/</guid><description>反向代理 http://localhost =&amp;gt; http://api-service
-location ~ ^/api { proxy_set_header Host $http_host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; proxy_pass http://&amp;lt;API-service&amp;gt;:&amp;lt;port&amp;gt;; } 添加后缀 http://ipfs-service/&amp;lt;hash&amp;gt;.&amp;lt;ext&amp;gt; =&amp;gt; http://ipfs-service/&amp;lt;hash&amp;gt;
-location ~ ^/prefix { rewrite ^/prefix/(.*).(&amp;lt;ext&amp;gt;)$ /$1 break; proxy_pass http://&amp;lt;API-service&amp;gt;:&amp;lt;port&amp;gt;$1; } 局部代理 http://domian/AAA/static/dir/a.js =&amp;gt; http:///static/dir/a.js
-location ~ (.*)/static/(.*)$ { proxy_ignore_client_abort on; proxy_http_version 1.1; proxy_pass https://&amp;lt;static-service&amp;gt;/static/$2; } 重定向 http://localhost/dirname (301)=&amp;gt; http://localhost/dirname/
-location ~ ^/dirname { return 301 &amp;#34; /dirname/&amp;#34;; }</description></item><item><title>汇编特征码</title><link>/posts/develop/assembly/assembly/</link><pubDate>Sun, 03 Apr 2022 02:33:36 +0000</pubDate><guid>/posts/develop/assembly/assembly/</guid><description>什么是特征码 特征码用于辨识程序执行的代码段，用于反作弊和逆向 什么情况使用特征码 在逆向工程中，如果程序重新打包或者做加密处理后原有的函数指针发生了偏移，之前的的地址无效。此时使用特征码，可以减少或避免出现类似情况 如何定位特征码 在目标地址上取一定范围的汇编代码记录，其中带有函数调用类似行为代码通畅不会做大的变动除非修改猿程序的函数会需要重新定位。 案例分析 1）如果特征码的代码带有特殊的常量，并且这个常量不是目标程序的内存地址时，优先选取其为特征码。一般常量在程序中很少会改变。
-例如如下为某函数的反汇编代码，获取这个函数的地址，选取&amp;quot;83 FE 2E 74 38&amp;quot;为特征码是比较合适的。-5地址处就为函数起始地址。
-$-5 &amp;gt; . 56 PUSH ESI ;函数地址 $-4 &amp;gt; . 8B7424 08 MOV ESI,DWORD PTR SS:[ESP+8]
-$ ==&amp;gt; &amp;gt; . 83FE 2E CMP ESI,2E ;2e 为特殊常量
-$+3 &amp;gt; . 74 38 JE 0BCCCCA2 ;短跳转
-$+5 &amp;gt; . 83FE 2D CMP ESI,2D $+8 &amp;gt; . 74 33 JE 0BCCCCA2
-$+A &amp;gt; . 83FE 33 CMP ESI,33
-2）如果特征码带有短跳转的代码，优先选取。因为只要你选取的特战码以及从选取的特征码地址到跳转的地址之间随目标程序更新变化的概率较少。如上面的短跳转指令
-3）如果特征码带有结构体或者类变量的对应偏移的代码，可以选取。一般只要结构体或者类变量不增加成员，就不会改变。</description></item><item><title>docker mysql 数据备份脚本shell（基于crontab）</title><link>/posts/devops/linux/docker-mysql-backup/</link><pubDate>Sat, 03 Jul 2021 09:32:00 +0000</pubDate><guid>/posts/devops/linux/docker-mysql-backup/</guid><description>定时备份数据库 新建一个backup.sh用于备份成sql文件
-#! /bin/bash BACKUP_DIR=&amp;#34;&amp;lt;备份sql保存位置&amp;gt;&amp;#34; LOG_FILE=&amp;#34;&amp;lt;LOG文件位置&amp;gt;&amp;#34; DATE=`date +%Y-%m-%d_%H-%M` USER=&amp;#34;数据库用户名&amp;#34; PASSWORD=&amp;#34;数据库密码&amp;#34; DATABASE=&amp;#34;数据库名&amp;#34; SQL_FILE=&amp;#34;mysql_$DATE.sql&amp;#34; DOCKER_TAG=&amp;#34;数据库docker name&amp;#34; if [! -d $BACKUP_DIR]; then mkdir -p &amp;#34;$BACKUP_DIR&amp;#34; fi echo -e &amp;#34;\n&amp;#34; &amp;gt;&amp;gt; $LOG_FILE cd $BACKUP_DIR docker exec -i $DOCKER_TAG mysqldump -u$USER -p$PASSWORD $DATABASE &amp;gt; $SQL_FILE if [[ $? == 0 ]]; then tar czvf $SQL_FILE.gz $SQL_FILE &amp;gt;&amp;gt; $LOG_FILE 2&amp;gt;&amp;amp;1 echo &amp;#34;$DATE----- $SQL_FILE.gz backup success!&amp;#34; &amp;gt;&amp;gt; $LOG_FILE rm -f $SQL_FILE else echo &amp;#34;$DATE----- $SQL_FILE.gz backup fail!&amp;#34; &amp;gt;&amp;gt; $LOG_FILE fi 定时删除超过规定时间的备份文件 新建一个clear_backup.</description></item><item><title>RESTful API 文章解读</title><link>/posts/develop/rules/restful-api/</link><pubDate>Sat, 03 Jul 2021 01:35:35 +0000</pubDate><guid>/posts/develop/rules/restful-api/</guid><description>RESTful API 设计指南 出处 作者： 阮一峰 日期： 2014年5月22日 网络应用程序，分为前端和后端两个部分。当前的发展趋势，就是前端设备层出不穷（手机、平板、桌面电脑、其他专用设备&amp;hellip;&amp;hellip;）。
-因此，必须有一种统一的机制，方便不同的前端设备与后端进行通信。这导致API构架的流行，甚至出现&amp;quot;API First&amp;quot;的设计思想。RESTful API是目前比较成熟的一套互联网应用程序的API设计理论。我以前写过一篇《理解RESTful架构》，探讨如何理解这个概念。
-今天，我将介绍RESTful API的设计细节，探讨如何设计一套合理、好用的API。我的主要参考了两篇文章（1，2）。
-RESTful API 一、协议 API与用户的通信协议，总是使用HTTPs协议。 二、域名 应该尽量将API部署在专用域名之下。 https://api.example.com 如果确定API很简单，不会有进一步扩展，可以考虑放在主域名下。
-https://example.org/api/
-三、版本（Versioning） 应该将API的版本号放入URL。 https://api.example.com/v1/ 另一种做法是，将版本号放在HTTP头信息中，但不如放入URL方便和直观。Github采用这种做法。
-四、路径（Endpoint） 路径又称&amp;quot;终点&amp;quot;（endpoint），表示API的具体网址。 在RESTful架构中，每个网址代表一种资源（resource），所以网址中不能有动词，只能有名词，而且所用的名词往往与数据库的表格名对应。一般来说，数据库中的表都是同种记录的&amp;quot;集合&amp;quot; （collection），所以API中的名词也应该使用复数。
-举例来说，有一个API提供动物园（zoo）的信息，还包括各种动物和雇员的信息，则它的路径应该设计成下面这样。
-https://api.example.com/v1/zoos https://api.example.com/v1/animals https://api.example.com/v1/employees
-五、HTTP动词 对于资源的具体操作类型，由HTTP词表示。 常用的HTTP动词有下面五个（括号里是对应的SQL命令）。
-GET（SELECT）：从服务器取出资源（一项或多项）。
-POST（CREATE）：在服务器新建一个资源。
-PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。
-PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。
-DELETE（DELETE）：从服务器删除资源。 还有两个不常用的HTTP动词。
-HEAD：获取资源的元数据。
-OPTIONS：获取信息，关于资源的哪些属性是客户端可以改变的。 下面是一些例子。
-GET /zoos：列出所有动物园
-POST /zoos：新建一个动物园
-GET /zoos/ID：获取某个指定动物园的信息
-PUT /zoos/ID：更新某个指定动物园的信息（提供该动物园的全部信息）
-PATCH /zoos/ID：更新某个指定动物园的信息（提供该动物园的部分信息）
-DELETE /zoos/ID：删除某个动物园
-GET /zoos/ID/animals：列出某个指定动物园的所有动物
-DELETE /zoos/ID/animals/ID：删除某个指定动物园的指定动物
-六、过滤信息（Filtering） 如果记录数量很多，服务器不可能都将它们返回给用户。API应该提供参数，过滤返回结果。 下面是一些常见的参数。
-?limit=10：指定返回记录的数量
-?offset=10：指定返回记录的开始位置。
-?page=2&amp;amp;per_page=100：指定第几页，以及每页的记录数。
-?sortby=name&amp;amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序。</description></item><item><title>驱动模式</title><link>/posts/develop/rules/driven-patterns/</link><pubDate>Sun, 06 Jun 2021 12:12:14 +0000</pubDate><guid>/posts/develop/rules/driven-patterns/</guid><description>TDD：测试驱动开发(Test-Driven Development) 测试驱动开发是敏捷开发中的一项核心实践和技术，也是一种设计方法论，TDD首先考虑使用需求（对象、功能、过程、接口等）
-主要是编写测试用例框架对功能的过程和接口进行设计，而测试框架可以持续进行验证。大行其道的一些模式对TDD的支持都非常不错，比如MVC和MVP等
-BDD：行为驱动开发(Behavior Driven Development) 也就是行为驱动开发。这里的B并非指的是Business，实际上BDD可以看作是对TDD的一种补充，让开发、测试、BA以及客户都能在这个基础上达成一致，JBehave之类的BDD框架
-ATDD：验收测试驱动开发（Acceptance Test Driven Development） 通过单元测试用例来驱动功能代码的实现，团队需要定义出期望的质量标准和验收细则，以明确而且达成共识的验收测试计划（包含一系列测试场景）来驱动开发人员的TDD实践和测试人员的测试脚本开发。面向开发人员，强调如何实现系统以及如何检验
-DDD：领域驱动开发（Domain Drive Design） DDD指的是Domain Drive Design，也就是领域驱动开发,DDD实际上也是建立在这个基础之上，因为它关注的是Service层的设计，着重于业务的实现,将分析和设计结合起来，不再使他们处于分裂的状态，这对于我们正确完整的实现客户的需求，以及建立一个具有业务伸缩性的模型</description></item><item><title>基于adb命令获取app 内存 FPS CPU 占用信息</title><link>/posts/devops/linux/adb-shell/</link><pubDate>Fri, 04 Jun 2021 17:48:56 +0000</pubDate><guid>/posts/devops/linux/adb-shell/</guid><description>adb shell am [command] am =&amp;gt;是activity manager的缩写,它可以启动activity,启动service,发送广播等 pm =&amp;gt;就是package manager的缩写.
-发送一条广播
-adb -s BH909NJ676 shell am broadcast adb 获取内存占用 adb shell dumpsys meminfo -h meminfo dump options: [-a] [-d] [-c] [-s] [--oom] [process] -a: include all available information for each process. -d: include dalvik details. -c: dump in a compact machine-parseable representation. -s: dump only summary of application memory usage. -S: dump also SwapPss. --oom: only show processes organized by oom adj.</description></item><item><title>Ubuntu UFW 防火墙常用使用操作</title><link>/posts/devops/linux/ubuntu-ufw/</link><pubDate>Fri, 04 Jun 2021 09:48:55 +0000</pubDate><guid>/posts/devops/linux/ubuntu-ufw/</guid><description>安装 Ubuntu20.04一般都默认安装了UFW（Uncomplicated Firewall），它是一款轻量化的工具，主要用于对输入输出的流量进行监控。如果没有安装，请用下面的命令安装：
-apt install ufw 安装成功后查看状态
-ufw status verbose 启用UFW
-ufw enable ufw default deny 允许外部访问指定端口
-ufw allow 53 允许指定IP访问全部端口
-ufw allow from &amp;lt;IP&amp;gt; 允许指定的IP访问指定的端口
-ufw allow proto tcp from 192.168.0.0/24 to any port 22 删除某一条端口规则配置
-ufw delete allow &amp;lt;PORT&amp;gt;</description></item><item><title>关于我</title><link>/about/</link><pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate><guid>/about/</guid><description>👋 Hello, I&amp;rsquo;m Jardel 一个热爱技术与生活的软件开发工程师
+连接鼠标，测试滚轮是否正常工作 确保滚轮灵敏度和防滑效果良好</description></item><item><title>关于我</title><link>/about/</link><pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate><guid>/about/</guid><description>👋 Hello, I&amp;rsquo;m Jardel 一个热爱技术与生活的软件开发工程师
 🏙️ 基本信息 📍 所在城市: 大连市
 💼 职业: 软件开发工程师
 🎯 专业方向: 全栈开发
