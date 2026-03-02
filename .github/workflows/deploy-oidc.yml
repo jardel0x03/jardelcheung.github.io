@@ -1,9 +1,9 @@
 name: Deploy to Aliyun ECS By oidc
 
 on:
-  push:
-    branches:
-      - master
+#  push:
+#    branches:
+#      - master
   #    paths:
   #      - 'index.html'
   #      - '.github/workflows/**'
@@ -30,6 +30,7 @@ jobs:
           sudo apt-get install -y jq
           curl -fsSL https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz | sudo tar -xz -C /usr/local/bin
           sudo chmod +x /usr/local/bin/aliyun
+          aliyun --version
       - name: Get GitHub OIDC token
         id: oidc
         shell: bash
@@ -46,6 +47,7 @@ jobs:
         run: |
           set -euo pipefail
           CREDS="$(aliyun sts AssumeRoleWithOIDC \
+            --RegionId "${REGION_ID}" \
             --RoleArn "$ROLE_ARN" \
             --OIDCProviderArn "$OIDC_PROVIDER_ARN" \
             --OIDCToken "${{ steps.oidc.outputs.token }}" \
@@ -55,13 +57,12 @@ jobs:
           echo "ALIBABA_CLOUD_ACCESS_KEY_SECRET=$(echo "$CREDS" | jq -r '.Credentials.AccessKeySecret')" >> "$GITHUB_ENV"
           echo "ALIBABA_CLOUD_SECURITY_TOKEN=$(echo "$CREDS" | jq -r '.Credentials.SecurityToken')" >> "$GITHUB_ENV"
           echo "ALIBABA_CLOUD_REGION_ID=${REGION_ID}" >> "$GITHUB_ENV"
+          # 强制 aliyun CLI 使用环境变量，而不是本地 profile
+          echo "ALIBABA_CLOUD_PROFILE=env" >> "$GITHUB_ENV"
       - name: Verify identity
         run: |
-          aliyun sts GetCallerIdentity
-      - name: Do your deployment
-        run: |
-          # 示例：列 OSS buckets（需权限）
-          aliyun oss ls
+          set -euo pipefail
+          aliyun sts GetCallerIdentity --RegionId "${ALIBABA_CLOUD_REGION_ID}"
       - name: Archive site files
         run: |
           set -euo pipefail
@@ -74,8 +75,6 @@ jobs:
           ECS_INSTANCE_ID: ${{ env.ECS_INSTANCE_ID }}
         run: |
           set -euo pipefail
-          # Cloud Assistant 临时文件上传到 /usr/local/cloudshell/tmp 或 /tmp 等位置
-          # 这里使用 ecs UploadFile（部分地域已支持，如不支持可改回 SSH/rsync 方案）
           FILE_CONTENT_BASE64=$(base64 -w0 site.tar.gz)
           RESP=$(aliyun ecs UploadFile \
             --RegionId "${ALIBABA_CLOUD_REGION_ID}" \
@@ -89,13 +88,24 @@ jobs:
           WEB_ROOT: ${{ env.WEB_ROOT }}
         run: |
           set -euo pipefail
-          # 在 ECS 上解压 /tmp/site.tar.gz 并同步到 WEB_ROOT
-          COMMAND_CONTENT=$(cat <<'EOF'
+
+          # 在 ECS 上执行的脚本，包含解压和 rsync
+          REMOTE_SCRIPT=$(cat <<'EOS'
           #!/bin/bash
           set -euo pipefail
+
           ARCHIVE="/tmp/site.tar.gz"
-          WEB_ROOT="${WEB_ROOT}"
+          WEB_ROOT="{{WEB_ROOT}}"
           TMP_DIR="/tmp/site-deploy-$$"
+
+          # 确保 rsync 存在
+          if ! command -v rsync >/dev/null 2>&1; then
+            if command -v yum >/dev/null 2>&1; then
+              yum install -y rsync
+            elif command -v apt-get >/dev/null 2>&1; then
+              apt-get update && apt-get install -y rsync
+            fi
+          fi
 
           mkdir -p "${TMP_DIR}"
           if [ -f "${ARCHIVE}" ]; then
@@ -109,11 +119,17 @@ jobs:
           rsync -av --delete "${TMP_DIR}/" "${WEB_ROOT}/"
 
           rm -rf "${TMP_DIR}" "${ARCHIVE}"
-          EOF
+          EOS
           )
+
+          # 将占位符替换为真实的 WEB_ROOT
+          REMOTE_SCRIPT="${REMOTE_SCRIPT//\{\{WEB_ROOT\}\}/$WEB_ROOT}"
+
+          # 编码为 base64 以避免换行/转义问题
+          COMMAND_CONTENT=$(printf "%s" "${REMOTE_SCRIPT}" | base64 -w0)
 
           aliyun ecs RunCommand \
             --RegionId "${ALIBABA_CLOUD_REGION_ID}" \
             --Type "RunShellScript" \
-            --InstanceIds '["'"${ECS_INSTANCE_ID}"'"]' \
+            --InstanceIds "[\"${ECS_INSTANCE_ID}\"]" \
             --CommandContent "${COMMAND_CONTENT}"
