@@ -1,10 +1,10 @@
 name: Deploy to Aliyun ECS
 
 on:
-#  push:
-#    branches:
-#      - master
-  workflow_dispatch:
+  push:
+    branches:
+      - master
+  # workflow_dispatch:
 
 jobs:
   deploy:
@@ -28,8 +28,12 @@ jobs:
 
       - name: Deploy to ECS
         run: |
-          # 使用 rsync 上传文件到 ECS 服务器的 www 目录，排除 .github 文件夹
-          rsync -avz --delete --exclude='.github/' --exclude='.git/' -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.ECS_USER }}@${{ secrets.ECS_HOST }}:${{ secrets.ECS_TARGET_PATH }}/
+          # 使用 rsync 上传文件到 ECS 服务器的 www 目录，排除 .github 和 .git 文件夹
+          rsync -avz --delete \
+            --exclude='.github/' \
+            --exclude='.git/' \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ ${{ secrets.ECS_USER }}@${{ secrets.ECS_HOST }}:${{ secrets.ECS_TARGET_PATH }}/
 
       - name: Cleanup
         run: |
